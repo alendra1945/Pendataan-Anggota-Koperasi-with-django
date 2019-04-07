@@ -16,12 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.views.generic import TemplateView
-from django.contrib.auth import auth_views
-from .forms AccountLoginForm
+from django.contrib.auth import views
+from .forms import AccountLoginForm
 
 urlpatterns = [
-    path('login/',auth_views.LoginView.as_view(template_name='login.html',authentication_form=AccountLoginForm),name='login'),
-    path('logout/',auth_views.LogoutView.as_view(template_name='logout.html'),name='logout'),
+    path('login/',views.LoginView.as_view(template_name='login.html',authentication_form=AccountLoginForm),name='login'),
+    path('logout/',views.LogoutView.as_view(),name='logout'),
 	path('',TemplateView.as_view(template_name='index.html'),name='home'),
 	path('survey-tambah-anggota/',include('anggota.urls',namespace='anggota')),
     path('penagihan/',include('penagihan.urls',namespace='penagihan')),

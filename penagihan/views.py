@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.views.generic import View,ListView,RedirectView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Penagihan
 from .forms import CreatePenagihanForm
 
@@ -22,7 +23,7 @@ class ExportData:
 		return response
 
 
-class ListPenagihanView(ListView,ExportData):
+class ListPenagihanView(LoginRequiredMixin,ListView,ExportData):
 	model=Penagihan
 	mode=None
 	template_name='list_penagihan.html'
@@ -59,7 +60,7 @@ class ListPenagihanView(ListView,ExportData):
 		return response
 
 	
-class CreatePenagihanView(View):
+class CreatePenagihanView(LoginRequiredMixin,View):
 	template_name='tambah_penagihan.html'
 	penagihan_form=CreatePenagihanForm()
 	mode=None
@@ -87,7 +88,7 @@ class CreatePenagihanView(View):
 			self.penagihan_form.save()
 		return redirect('penagihan:home')
 
-class DeletePenagihanView(RedirectView):
+class DeletePenagihanView(LoginRequiredMixin,RedirectView):
 	pattern_name='penagihan:home'
 	permanent=False
 	query_string=False
@@ -97,7 +98,7 @@ class DeletePenagihanView(RedirectView):
 		return super().get_redirect_url()
 
 
-class SearchView(ListView,ExportData):
+class SearchView(LoginRequiredMixin,ListView,ExportData):
 	model=Penagihan
 	mode=None
 	template_name='list_penagihan.html'

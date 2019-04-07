@@ -5,6 +5,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import View,ListView,RedirectView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Anggota
 from .forms import CreateAnggotaForm
 
@@ -21,7 +22,7 @@ class ExportData:
 			writer.writerow(d)
 		return response
 
-class ListAnggotaView(ListView,ExportData):
+class ListAnggotaView(LoginRequiredMixin,ListView,ExportData):
 	model=Anggota
 	mode=None
 	template_name='list_anggota.html'
@@ -61,7 +62,7 @@ class ListAnggotaView(ListView,ExportData):
 			return context['data']
 		return response
 		
-class CreateAnggotaView(View):
+class CreateAnggotaView(LoginRequiredMixin,View):
 	template_name='tambah_anggota.html'
 	anggota_form=CreateAnggotaForm()
 	mode=None
@@ -89,7 +90,7 @@ class CreateAnggotaView(View):
 			self.anggota_form.save()
 		return redirect('anggota:home')
 
-class DeleteAnggotaView(RedirectView):
+class DeleteAnggotaView(LoginRequiredMixin,RedirectView):
 	pattern_name='anggota:home'
 	permanent=False
 	query_string=False
@@ -99,7 +100,7 @@ class DeleteAnggotaView(RedirectView):
 		return super().get_redirect_url()
 
 
-class SearchView(ListView,ExportData):
+class SearchView(LoginRequiredMixin,ListView,ExportData):
 	model=Anggota
 	mode=None
 	template_name='list_anggota.html'
