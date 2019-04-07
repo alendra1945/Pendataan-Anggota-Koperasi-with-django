@@ -1,0 +1,14 @@
+from django.db import models
+
+# Create your models here.
+
+class Penagihan(models.Model):
+	no_ba=models.CharField(max_length=255)
+	nama_anggota=models.CharField(max_length=255)
+	alamat=models.TextField()
+	no_hp=models.CharField(max_length=13)
+	tanggal=models.DateField(auto_now_add=True)
+	keterangan=models.TextField()
+
+	def __str__(self):
+		return self.nama_anggotas

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block maincontent %}
+	<h3 class="text-center mt-2">Pilih data yang ingin dilihat / ditambahkan</h3>
+	<div class="row text-center">
+		<div class="col-12">
+			<a href="{% url "anggota:home"%}?jenis=survey" class="btn btn-primary">
+		Survey / Pendataan Anggota
+			</a>
+		</div>
+		<div class="col-12 mt-3">
+			<a href="{% url "penagihan:home" %}" class="btn btn-danger">
+		Penagihan
+			</a>
+		</div>
+	</div>
+{% endblock maincontent %}

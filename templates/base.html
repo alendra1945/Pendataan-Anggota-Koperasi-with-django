@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	<link rel="stylesheet" type="text/css" href="{% static "bootstrap.min.css" %}">
+</head>
+<body>
+	{% include "snippets/navbar.html" %}
+<div class="container">
+	{% block maincontent %}
+		
+	{% endblock maincontent %}
+</div>
+
+
+<script type="text/javascript" src="{% static "jquery.min.js" %}"></script>
+<script type="text/javascript" src="{% static "popper.min.js" %}"></script>
+<script type="text/javascript" src="{% static "bootstrap.min.js" %}"></script>
+
+{% block costum_js %}
+	
+{% endblock costum_js %}
+
+</body>
+</html>

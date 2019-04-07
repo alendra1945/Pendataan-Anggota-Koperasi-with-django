@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+
+{% block maincontent %}
+	<div class="row mt-5 mb-2 pb-2 border-bottom border-primary">
+	<div class="col">
+	  <select id="tahun" class="custom-select" >
+	    <option value='all'selected>Tahun...</option>
+	    {% for t in daf_tahun  %}
+	    	<option value="{{t}}">{{t}}</option>
+	    {% endfor %}
+  	  </select>
+	</div>
+	<div class="col">
+	  <select id="bulan" class="custom-select" >
+	    <option selected value='all'>Bulan...</option>
+	    {% for b in daf_bulan  %}
+	    	<option value="{{b}}">{{b}}</option>
+	    {% endfor %}
+  	  </select>
+  	 </div>
+	<div class="col">
+	  <select id="tanggal" class="custom-select">
+	    <option selected value='all'>Tanggal..</option>
+	     {% for dt in daf_tanggal  %}
+	    	<option value="{{dt}}">{{dt}}</option>
+	    {% endfor %}
+  	  </select>
+	</div>
+		<div class="col">
+		  <a href="{% url "anggota:home"%}{% if status %}?jenis=anggotabaru{% endif %}"  id="tgl_data" class="btn btn-primary">Tampilkan Data</a>
+		</div>
+	</div>
+	<div class="row mb-2 mb-2 pb-2 border-bottom border-primary">
+		<div class="col">
+		<a href="{% url "anggota:home" %}?jenis=survey" class="btn btn{% if status %}-outline{% endif %}-success">
+			Hasil Survey
+		</a>
+	</div>
+	<div class="col my-1">
+		<a href="{% url "anggota:home" %}?jenis=anggotabaru" class="btn btn{% if not status %}-outline{% endif %}-success">
+			anggota Baru
+		</a>
+	</div>
+	<div class="col">
+		<a href="{% url "anggota:tambahdata" %}" class="btn btn-outline-primary">
+			Tambah data
+		</a>
+	</div>
+	</div>
+	
+	<div style="overflow-x:scroll">
+	<table class="table">
+	  <thead>
+	    <tr>
+	      <th scope="col">#</th>
+	      <th scope="col">No BA</th>
+	      <th scope="col">Nama Anggota</th>
+	      <th scope="col">Tanggal</th>
+	      <th scope="col">Alamat</th>
+	      <th scope="col">No Hp</th>
+	      <th scope="col">Nama Penjamin</th>
+	      <th scope="col">Keterangan</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	{% for a in anggota  %}
+	  	<tr>
+	      <th scope="row">{{forloop.counter}}</th>
+	      <td>{{a.no_ba}}</td>
+	      <td>{{a.nama_anggota}}</td>
+	      <td>{{a.tanggal}}</td>
+	      <td>{{a.alamat}}</td>
+	      <td>{{a.no_hp}}</td>
+	      <td>{{a.nama_penjamin}}</td>
+	      <td>{{a.keterangan}}</td>
+	      <td>
+	      	<a href="{% url "anggota:ubah" a.id %}" class="btn btn-warning">Ubah</a>
+	      </td>
+	       <td>
+	      	<a href="{% url "anggota:hapus" a.id %}" class="btn btn-danger">Hapus</a>
+	      </td>
+	    </tr>
+	  	{% endfor %}
+	    
+	  </tbody>
+	</table>
+	</div>			
+	<a href='{% if search_export %}
+				{% if status %}
+				{% with "anggotabaru" as status_ini%}{% url "anggota:search_exp" status_ini%}{% endwith %}
+				{%else%}
+				{% with "survey" as status_ini%}{% url "anggota:search_exp" status_ini%}{% endwith %}
+				{% endif %}
+			{% else %}
+				{% url "anggota:export" %}
+				{% endif %}?{% for key,value in request.GET.items %}{{key}}={{value}}&{% endfor %}' class="btn btn-primary ml-4 mb-4 mt-2">Print Data ini</a>
+{% endblock maincontent %}
+
+
+
+
+{% block costum_js %}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			let url='{% url "anggota:home"%}{% if status %}?jenis=anggotabaru{%else%}?jenis=survey{% endif %}';
+			$('#tahun').on('change',function(){
+				t_url=url+"&tahun="+$('#tahun').val()+"&bulan="+$('#bulan').val()+"&tanggal="+$('#tanggal').val();
+				$('#tgl_data').attr('href',t_url);
+			});
+			$('#bulan').on('change',function(){
+				t_url=url+"&tahun="+$('#tahun').val()+"&bulan="+$('#bulan').val()+"&tanggal="+$('#tanggal').val();
+				$('#tgl_data').attr('href',t_url);
+			});
+			$('#tanggal').on('change',function(){
+				t_url=url+"&tahun="+$('#tahun').val()+"&bulan="+$('#bulan').val()+"&tanggal="+$('#tanggal').val();;
+				$('#tgl_data').attr('href',t_url);
+			});
+
+			{% if status %}
+			{% with "anggotabaru" as status_ini%}let aksi='{% url "anggota:search" status_ini%}';{% endwith %}
+			{%else%}
+			{% with "survey" as status_ini%}let aksi='{% url "anggota:search" status_ini%}';{% endwith %}
+			{% endif %}
+			$('#form_search').attr('action',aksi);
+
+		});
+	</script>
+{% endblock costum_js %}

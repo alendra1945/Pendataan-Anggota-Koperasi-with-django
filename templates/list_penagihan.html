@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block maincontent %}
+<div class="row mt-5 mb-2 pb-2 border-bottom border-primary">
+	<div class="col">
+	  <select id="tahun" class="custom-select" >
+	    <option value='all'selected>Tahun...</option>
+	    {% for t in daf_tahun  %}
+	    	<option value="{{t}}">{{t}}</option>
+	    {% endfor %}
+  	  </select>
+	</div>
+	<div class="col">
+	  <select id="bulan" class="custom-select" >
+	    <option selected value='all'>Bulan...</option>
+	    {% for b in daf_bulan  %}
+	    	<option value="{{b}}">{{b}}</option>
+	    {% endfor %}
+  	  </select>
+  	 </div>
+	<div class="col">
+	  <select id="tanggal" class="custom-select">
+	    <option selected value='all'>Tanggal..</option>
+	     {% for dt in daf_tanggal  %}
+	    	<option value="{{dt}}">{{dt}}</option>
+	    {% endfor %}
+  	  </select>
+	</div>
+		<div class="col">
+		  <a href="{% url "penagihan:home"%}{% if status %}?jenis=anggotabaru{% endif %}"  id="tgl_data" class="btn btn-primary">Tampilkan Data</a>
+		</div>
+	</div>
+
+	<div class="row mb-2">
+	<div class="col">
+		<a href="{% url "penagihan:tambahdata" %}" class="btn btn-outline-primary">
+			Tambah data
+		</a>
+	</div>
+	</div>
+	
+	<table class="table">
+	  <thead>
+	    <tr>
+	      <th scope="col">#</th>
+	      <th scope="col">No BA</th>
+	      <th scope="col">Nama Anggota</th>
+	      <th scope="col">Tanggal</th>
+	      <th scope="col">Alamat</th>
+	      <th scope="col">No Hp</th>
+	      <th scope="col">Keterangan</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	{% for p in penagihan %}
+	  	<tr>
+	      <th scope="row">{{forloop.counter}}</th>
+	      <td>{{p.no_ba}}</td>
+	      <td>{{p.nama_anggota}}</td>
+	      <td>{{p.tanggal}}</td>
+	      <td>{{p.alamat}}</td>
+	      <td>{{p.no_hp}}</td>
+	      <td>{{p.keterangan}}</td>
+	      <td>
+	      	<a href="{% url "penagihan:ubah" p.id %}" class="btn btn-warning">Ubah</a>
+	      </td>
+	       <td>
+	      	<a href="{% url "penagihan:hapus" p.id %}" class="btn btn-danger">Hapus</a>
+	      </td>
+	    </tr>
+	  	{% endfor %}
+	    
+	  </tbody>
+	</table>
+	<a href='{% if search_export %}
+				{% url "penagihan:search_exp"%}
+			{% else %}
+				{% url "penagihan:export" %}
+			{% endif %}?{% for key,value in request.GET.items %}{{key}}={{value}}&{% endfor %}' class="btn btn-primary ml-4 mb-4 mt-2">Print Data ini</a>
+{% endblock maincontent %}
+
+
+{% block costum_js %}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			let url='{% url "penagihan:home"%}{% if status %}?jenis=anggotabaru{%else%}?jenis=survey{% endif %}';
+			$('#tahun').on('change',function(){
+				t_url=url+"&tahun="+$('#tahun').val()+"&bulan="+$('#bulan').val()+"&tanggal="+$('#tanggal').val();
+				$('#tgl_data').attr('href',t_url);
+			});
+			$('#bulan').on('change',function(){
+				t_url=url+"&tahun="+$('#tahun').val()+"&bulan="+$('#bulan').val()+"&tanggal="+$('#tanggal').val();
+				$('#tgl_data').attr('href',t_url);
+			});
+			$('#tanggal').on('change',function(){
+				t_url=url+"&tahun="+$('#tahun').val()+"&bulan="+$('#bulan').val()+"&tanggal="+$('#tanggal').val();
+				$('#tgl_data').attr('href',t_url);
+			});
+		
+			let aksi='{% url "penagihan:search"%}'
+			$('#form_search').attr('action',aksi);
+
+		});
+	</script>
+{% endblock costum_js %}
