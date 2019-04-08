@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{{title}}</title>
+	<title>{% if not title %}Si alvin online{% endif %}{{title}}</title>
 	<link rel="stylesheet" type="text/css" href="{% static "bootstrap.min.css" %}">
 </head>
 <body>
@@ -14,7 +14,9 @@
 	{% endblock maincontent %}
 </div>
 
-
+<div class="container card bg-light shadow text-center mt-5">
+	<strong>Desain By <a href="https://fb.me/BatasibukProject" class="btn btn-outline-danger">Batasibuk Project</a></strong>
+</div>
 <script type="text/javascript" src="{% static "jquery.min.js" %}"></script>
 <script type="text/javascript" src="{% static "popper.min.js" %}"></script>
 <script type="text/javascript" src="{% static "bootstrap.min.js" %}"></script>
