@@ -8,7 +8,7 @@ app_name='anggota'
 
 urlpatterns=[
 	path('export/',ListAnggotaView.as_view(mode='export'),name='export'),
-	path('search/<status>/',SearchView.as_view(),name='search'),
+	path('search/<str:status>/',SearchView.as_view(),name='search'),
 	path('search/export/<status>/',SearchView.as_view(mode='export'),name='search_exp'),
 	path('tambahdata/',CreateAnggotaView.as_view(mode=''),name='tambahdata'),
 	path('ubah/<int:id_anggota>/',CreateAnggotaView.as_view(mode='ubah'),name='ubah'),
