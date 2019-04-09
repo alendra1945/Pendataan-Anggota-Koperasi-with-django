@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 # Create your models here.
 status_choice=(
 		(0,'Survey'),
@@ -11,7 +11,7 @@ class Anggota(models.Model):
 	alamat=models.TextField()
 	no_hp=models.CharField(max_length=13)
 	nama_penjamin=models.CharField(max_length=255)
-	tanggal=models.DateField(auto_now_add=True)
+	tanggal=models.DateField(default=datetime.date.today)
 	keterangan=models.TextField()
 	status=models.IntegerField(choices=status_choice)
 
