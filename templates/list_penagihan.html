@@ -4,7 +4,7 @@
 <div class="row mt-5 mb-2 pb-2 border-bottom border-primary">
 	<div class="col">
 	  <select id="tahun" class="custom-select" >
-	    <option value='all'selected>Tahun...</option>
+	    <option value='all'selected>Semua Tahun</option>
 	    {% for t in daf_tahun  %}
 	    	<option value="{{t}}">{{t}}</option>
 	    {% endfor %}
@@ -12,7 +12,7 @@
 	</div>
 	<div class="col">
 	  <select id="bulan" class="custom-select" >
-	    <option selected value='all'>Bulan...</option>
+	    <option selected value='all'>Semua Bulan</option>
 	    {% for b in daf_bulan  %}
 	    	<option value="{{b}}">{{b}}</option>
 	    {% endfor %}
@@ -20,7 +20,7 @@
   	 </div>
 	<div class="col">
 	  <select id="tanggal" class="custom-select">
-	    <option selected value='all'>Tanggal..</option>
+	    <option selected value='all'>Semua Tanggal</option>
 	     {% for dt in daf_tanggal  %}
 	    	<option value="{{dt}}">{{dt}}</option>
 	    {% endfor %}
@@ -38,7 +38,7 @@
 		</a>
 	</div>
 	</div>
-	
+	<div style="overflow-x:scroll">
 	<table class="table">
 	  <thead>
 	    <tr>
@@ -72,6 +72,7 @@
 	    
 	  </tbody>
 	</table>
+	</div>
 	<a href='{% if search_export %}
 				{% url "penagihan:search_exp"%}
 			{% else %}
