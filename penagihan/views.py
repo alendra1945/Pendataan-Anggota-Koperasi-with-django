@@ -30,13 +30,13 @@ class ExportData:
 		ws=wb.add_sheet('Data')
 		row_num=0
 		font_style=xlwt.XFStyle()
-		columns=['No BA','Nama Anggota','Alamat','No Hp','Nama Penjamin','Tanggal','Keterangan']
+		columns=['No BA','Nama Anggota','Alamat','No Hp','Tanggal','Keterangan']
 		for col_num in range(len(columns)):
 			ws.write(row_num,col_num,columns[col_num],font_style)
 
 		font_style=xlwt.XFStyle()
 
-		rows=Data.values_list('no_ba','nama_anggota','alamat','no_hp','nama_penjamin','tanggal','keterangan')
+		rows=Data.values_list('no_ba','nama_anggota','alamat','no_hp','tanggal','keterangan')
 
 		for row in rows:
 			row_num+=1
