@@ -21,6 +21,27 @@ class ExportData:
 		for d in Data:
 			writer.writerow(d)
 		return response
+	def export_data_exel(self,Data):
+		response=HttpResponse(content_type='application/ms-excel')
+		response['Content-Disposition']=f"attachment; filename=data-{time.strftime('%y%m%d%H%M%S')}.xls"
+
+		wb=xlwt.Workbook(encoding='utf-8')
+		ws=wb.add_sheet('Data')
+		row_num=0
+		font_style=xlwt.XFStyle()
+		columns=['No BA','Nama Anggota','Alamat','No Hp','Nama Penjamin','Tanggal','Keterangan']
+		for col_num in range(len(columns)):
+			ws.write(row_num,col_num,columns[col_num],font_style)
+
+		font_style=xlwt.XFStyle()
+
+		rows=Data.values_list('no_ba','nama_anggota','alamat','no_hp','nama_penjamin','tanggal','keterangan')
+
+		for row in rows:
+			row_num+=1
+			for col_num in range(len(row)):
+				ws.write(row_num,col_num,row[col_num],font_style)
+		wb.save(response)
 
 
 class ListPenagihanView(LoginRequiredMixin,ListView,ExportData):
@@ -48,7 +69,7 @@ class ListPenagihanView(LoginRequiredMixin,ListView,ExportData):
 					tanggal=self.request.GET['tanggal']
 					context['penagihan']=self.model.objects.filter(tanggal__year=tahun,tanggal__month=bulan,tanggal__day=tanggal)
 		if self.mode=='export':
-			context['data']=self.export_data_csv(context['penagihan'])
+			context['data']=self.export_data_exel(context['penagihan'])
 		return context
 
 	def get(self,request,*args,**kwargs):
@@ -118,7 +139,7 @@ class SearchView(LoginRequiredMixin,ListView,ExportData):
 			context['penagihan']=self.model.objects.filter(Q(no_ba__icontains=search) | Q(nama_anggota__icontains=search) | Q(alamat__icontains=search))
 		context['search_export']=1
 		if self.mode=='export':
-			context['data']=self.export_data_csv(context['penagihan'])
+			context['data']=self.export_data_exel(context['penagihan'])
 		return context
 	def get(self,request,*args,**kwargs):
 			response=super().get(request,*args,**kwargs)
