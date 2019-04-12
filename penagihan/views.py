@@ -15,7 +15,7 @@ from .forms import CreatePenagihanForm
 class ExportData:
 	def export_data_csv(self,Data):
 		response=HttpResponse(content_type='text/csv')
-		response['Content-Disposition']=f"attachment; filename=data-{time.strftime('%y%m%d%H%M%S')}"
+		response['Content-Disposition']=f"attachment; filename=data-{time.strftime('%y%m%d%H%M%S')}.csv"
 		Data=Data.values_list('no_ba','nama_anggota','alamat','no_hp','tanggal','keterangan')
 		writer=csv.writer(response)
 		writer.writerow(['No BA','Nama Anggota','Alamat','No Hp','Tanggal','Keterangan'])
@@ -43,7 +43,7 @@ class ExportData:
 			for col_num in range(len(row)):
 				ws.write(row_num,col_num,row[col_num],font_style)
 		wb.save(response)
-
+		return response
 
 class ListPenagihanView(LoginRequiredMixin,ListView,ExportData):
 	model=Penagihan
