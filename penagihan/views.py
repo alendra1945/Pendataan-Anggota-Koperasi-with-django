@@ -127,7 +127,7 @@ class SearchView(LoginRequiredMixin,ListView,ExportData):
 	context_object_name='penagihan'
 	tahun_sekarang=int(time.strftime('%Y'))+1
 	extra_context={
-		'title':'Survey/TambahAnggota',
+		'title':'Penagihan',
 		'daf_tanggal':range(1,32),
 		'daf_bulan':range(1,13),
 		'daf_tahun':range(2016,tahun_sekarang)
